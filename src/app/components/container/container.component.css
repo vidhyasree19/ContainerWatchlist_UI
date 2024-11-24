@@ -1,0 +1,136 @@
+/* General Container Styling */
+.container {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 100%; /* Ensures the container doesn't exceed screen width */
+  margin: 0 auto;
+}
+
+/* Header Styling */
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #007bff;
+}
+
+/* Table Styling */
+.table {
+  margin-top: 20px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.table th, .table td {
+  padding: 6px 6px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table thead {
+  background-color: #343a40;
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+/* Action Button Styling */
+.btn {
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover, .btn-info:hover, .btn-danger:hover {
+  transform: translateY(-3px);
+}
+
+.btn-success {
+  background-color: #1ee64d;
+  border: none;
+}
+
+.btn-info {
+  background-color: rgb(234, 234, 13);
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-sm {
+  padding: 8px 15px;
+}
+
+/* Input and Form Styling */
+input.form-control {
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-left: 15px;
+
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards for Each Container */
+.table-responsive {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* padding: 2px; */
+  background-color: #ffffff;
+  overflow-x: auto; /* Allows horizontal scrolling for smaller screens */
+}
+
+/* Hover Effects for Containers */
+.table td:hover {
+  background-color: #e9ecef;
+}
+
+/* Add to Watchlist and View Cart Buttons */
+.d-flex button {
+  margin: 0 10px;
+}
+
+/* Ensure the page is responsive and well-aligned */
+@media (max-width: 768px) {
+  /* Make the container smaller on mobile devices */
+  .container {
+    padding: 15px;
+  }
+
+  /* Adjust the header font size on small screens */
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  /* Adjust button sizes on small screens */
+  .btn-lg {
+    padding: 10px 15px;
+  }
+
+  /* Adjust the table's horizontal scroll for smaller screens */
+  .table-responsive {
+    padding: 10px;
+    /* overflow-x: auto; */
+  }
+}

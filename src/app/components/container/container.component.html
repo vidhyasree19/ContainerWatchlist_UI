@@ -1,0 +1,61 @@
+<div class="container">
+  <!-- View Cart Button -->
+  <div class="view-cart">
+    <button (click)="viewCart()">View Cart</button>
+  </div>
+
+  <h1>Add Container to Watchlist</h1>
+
+  <!-- Search form to enter container number -->
+  <div>
+    <input [(ngModel)]="containerNumber" placeholder="Enter Container Number" />
+    <button (click)="addContainerToWatchlist()">Add to Watchlist</button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Display Watchlist -->
+  <div *ngIf="containers.length > 0">
+    <h2>Your Watchlist</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Container Number</th>
+          <th>Trade Type</th>
+          <th>Status</th>
+          <th>Vessel Name</th>
+          <th>Vessel Code</th>
+          <th>Voyage</th>
+          <th>Origin</th>
+          <th>Line</th>
+          <th>Destination</th>
+          <th>Size Type</th>
+          <th>Fees</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let container of containers">
+          <td>{{ container.containerNumber }}</td>
+          <td>{{ container.tradeType }}</td>
+          <td>{{ container.status }}</td>
+          <td>{{ container.vesselName }}</td>
+          <td>{{ container.vesselCode }}</td>
+          <td>{{ container.voyage }}</td>
+          <td>{{ container.origin }}</td>
+          <td>{{ container.line }}</td>
+          <td>{{ container.destination }}</td>
+          <td>{{ container.sizeType }}</td>
+          <td>{{ container.fees }}</td>
+          <td>
+            <button *ngIf="!container.cartAdded" (click)="addToCart(container)">Add to Cart</button>
+            <button (click)="deleteContainer(container.containerNumber)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

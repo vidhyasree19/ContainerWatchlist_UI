@@ -1,0 +1,25 @@
+<div class="container">
+    <h1>View Cart</h1>
+  
+    <table *ngIf="cartItems.length > 0">
+      <thead>
+        <tr>
+          <th>Container Number</th>
+          <th>Trade Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>{{ item.containerNumber }}</td>
+          <td>{{ item.tradeType }}</td>
+          <td>{{ item.status }}</td>
+          <td>
+            <button (click)="removeFromCart(item)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
