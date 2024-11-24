@@ -1,25 +1,66 @@
 <div class="container">
-    <h1>View Cart</h1>
-  
-    <table *ngIf="cartItems.length > 0">
-      <thead>
-        <tr>
-          <th>Container Number</th>
-          <th>Trade Type</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of cartItems">
-          <td>{{ item.containerNumber }}</td>
-          <td>{{ item.tradeType }}</td>
-          <td>{{ item.status }}</td>
-          <td>
-            <button (click)="removeFromCart(item)">Remove</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <h1>View Cart</h1>
+
+  <!-- Loading Spinner (show while cartItems are loading) -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading your cart items...</p>
   </div>
-  
+
+  <!-- Error Message if any error occurs while loading -->
+  <div *ngIf="errorMessage" class="error">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <!-- Cart Table -->
+  <table *ngIf="!isLoading && cartItems.length > 0">
+    <thead>
+      <tr>
+        <th>Container Number</th>
+        <th>Trade Type</th>
+        <th>Status</th>
+        <th>Vessel Name</th>
+        <th>Vessel Code</th>
+        <th>Voyage</th>
+        <th>Origin</th>
+        <th>Line</th>
+        <th>Destination</th>
+        <th>Size Type</th>
+        <th>Fees</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cartItems">
+        <td>{{ item.containerNumber }}</td>
+        <td>{{ item.tradeType }}</td>
+        <td>{{ item.status }}</td>
+        <td>{{ item.vesselName }}</td>
+        <td>{{ item.vesselCode }}</td>
+        <td>{{ item.voyage }}</td>
+        <td>{{ item.origin }}</td>
+        <td>{{ item.line }}</td>
+        <td>{{ item.destination }}</td>
+        <td>{{ item.sizeType }}</td>
+        <td>{{ item.fees | currency }}</td> <!-- Format the fees as currency -->
+        <td>
+          <button (click)="removeFromCart(item)">Remove</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Total Fees Display -->
+  <div *ngIf="!isLoading && cartItems.length > 0">
+    <h3>Total Fees: {{ getTotalFees() | currency }}</h3>
+  </div>
+
+  <!-- Proceed to Checkout Button -->
+  <div *ngIf="!isLoading && cartItems.length > 0">
+    <button (click)="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+
+  <!-- Empty Cart Message -->
+  <div *ngIf="!isLoading && cartItems.length === 0">
+    <p>Your cart is empty. Please add items to the cart.</p>
+  </div>
+</div>

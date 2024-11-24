@@ -1,0 +1,158 @@
+/* General Page Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h1, h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  p {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  
+  table th, table td {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+    color: #333;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  table td button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  table td button:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+  }
+  
+  table td button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+  
+  /* Total Fees Section */
+  h3 {
+    font-size: 20px;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+  /* Buttons - Proceed to Checkout */
+  button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px); /* Slight "lift" effect */
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  /* Empty Cart Message */
+  p {
+    font-size: 16px;
+    color: #777;
+    margin-top: 20px;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 600px) {
+    button {
+      width: auto; /* Buttons will shrink to fit content on wider screens */
+    }
+  
+    table td button {
+      width: auto;
+    }
+  
+    h3 {
+      font-size: 24px;
+    }
+  
+    table th, table td {
+      padding: 14px 25px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      width: 95%; /* Containers adjust on smaller screens */
+    }
+  
+    table th, table td {
+      font-size: 12px; /* Smaller font size on mobile */
+      padding: 12px 10px;
+    }
+  
+    button {
+      padding: 12px 10px;
+    }
+  }
+  

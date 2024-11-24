@@ -1,136 +1,183 @@
-/* General Container Styling */
+/* General styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
 .container {
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 100%; /* Ensures the container doesn't exceed screen width */
-  margin: 0 auto;
-}
-
-/* Header Styling */
-h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-}
-
-h3 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #007bff;
-}
-
-/* Table Styling */
-.table {
-  margin-top: 20px;
-  border-radius: 8px;
   width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-.table th, .table td {
-  padding: 6px 6px;
+h1, h2 {
+  color: #333;
   text-align: center;
-  vertical-align: middle;
+  margin-bottom: 20px;
 }
 
-.table thead {
-  background-color: #343a40;
+/* Form and input styling */
+input[type="text"] {
+  width: 100%;
+  padding: 20px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Button styling - Consistent and Attractive */
+button {
+  background-color: #4CAF50;
   color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 10px;
 }
 
-.table-hover tbody tr:hover {
-  background-color: #f1f1f1;
+button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px); /* Slight "lift" on hover */
 }
 
-.table-striped tbody tr:nth-child(odd) {
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  text-align: left;
+  padding: 14px;
+  font-size: 14px;
+}
+
+table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.table-bordered {
-  border: 1px solid #dee2e6;
+table tr:hover {
+  background-color: #f1f1f1;
+}
+
+table td {
+  font-size: 14px;
+}
+
+/* Table Action Buttons */
+table td button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
   border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
 }
 
-/* Action Button Styling */
-.btn {
-  border-radius: 20px;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
+table td button:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px); /* Slight "lift" on hover */
 }
 
-.btn-success:hover, .btn-info:hover, .btn-danger:hover {
-  transform: translateY(-3px);
+table td button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
 }
 
-.btn-success {
-  background-color: #1ee64d;
-  border: none;
+/* View Cart button styling */
+.view-cart {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.btn-info {
-  background-color: rgb(234, 234, 13);
-  border: none;
+.view-cart button {
+  background-color: #007BFF;
+  color: white;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  border: none;
+.view-cart button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Slight "lift" on hover */
 }
 
-.btn-sm {
-  padding: 8px 15px;
-}
-
-/* Input and Form Styling */
-input.form-control {
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin-right: 5px;
-  margin-left: 15px;
-
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Cards for Each Container */
-.table-responsive {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  /* padding: 2px; */
-  background-color: #ffffff;
-  overflow-x: auto; /* Allows horizontal scrolling for smaller screens */
-}
-
-/* Hover Effects for Containers */
-.table td:hover {
-  background-color: #e9ecef;
-}
-
-/* Add to Watchlist and View Cart Buttons */
-.d-flex button {
-  margin: 0 10px;
-}
-
-/* Ensure the page is responsive and well-aligned */
-@media (max-width: 768px) {
-  /* Make the container smaller on mobile devices */
-  .container {
-    padding: 15px;
+/* Responsive Design */
+@media (min-width: 600px) {
+  button {
+    width: auto; /* Buttons will shrink to fit content on wider screens */
   }
 
-  /* Adjust the header font size on small screens */
-  h1 {
-    font-size: 1.75rem;
+  .view-cart button {
+    width: auto; /* View Cart button width adjusts on larger screens */
   }
 
-  /* Adjust button sizes on small screens */
-  .btn-lg {
-    padding: 10px 15px;
-  }
-
-  /* Adjust the table's horizontal scroll for smaller screens */
-  .table-responsive {
-    padding: 10px;
-    /* overflow-x: auto; */
+  table td button {
+    width: auto; /* Table buttons adjust width on larger screens */
   }
 }
+.loading-message {
+  font-size: 1.2em;
+  color: #555;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.2em;
+}
+

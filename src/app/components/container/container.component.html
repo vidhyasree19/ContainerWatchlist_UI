@@ -9,7 +9,7 @@
   <!-- Search form to enter container number -->
   <div>
     <input [(ngModel)]="containerNumber" placeholder="Enter Container Number" />
-    <button (click)="addContainerToWatchlist()">Add to Watchlist</button>
+    <button (click)="addContainerToWatchlist()" [disabled]="isLoading">Add to Watchlist</button>
   </div>
 
   <!-- Error Message -->
@@ -17,8 +17,13 @@
     {{ errorMessage }}
   </div>
 
+  <!-- Loading Message -->
+  <div *ngIf="isLoading" class="loading-message">
+    <p>Loading, please wait...</p>
+  </div>
+
   <!-- Display Watchlist -->
-  <div *ngIf="containers.length > 0">
+  <div *ngIf="containers.length > 0 && !isLoading">
     <h2>Your Watchlist</h2>
     <table class="table">
       <thead>
@@ -51,8 +56,11 @@
           <td>{{ container.sizeType }}</td>
           <td>{{ container.fees }}</td>
           <td>
-            <button *ngIf="!container.cartAdded" (click)="addToCart(container)">Add to Cart</button>
-            <button (click)="deleteContainer(container.containerNumber)">Delete</button>
+            <!-- Show "Add to Cart" button only if fees > 0 and container is not already added -->
+            <button *ngIf="isFeesGreaterThanZero(container.fees) && !container.cartAdded" (click)="addToCart(container)" [disabled]="isLoading">Add to Cart</button>
+            <!-- Show "Added" text or a different button if container is already in cart -->
+            <button *ngIf="container.cartAdded" disabled>Added to Cart</button>
+            <button (click)="deleteContainer(container.containerNumber)" [disabled]="isLoading">Delete</button>
           </td>
         </tr>
       </tbody>
