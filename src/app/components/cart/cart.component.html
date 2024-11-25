@@ -1,66 +1,47 @@
-<div class="container">
-  <h1>View Cart</h1>
-
-  <!-- Loading Spinner (show while cartItems are loading) -->
+<div class="cart-container">
+  <h2>Your Cart</h2>
+  
+  <!-- Loading State -->
   <div *ngIf="isLoading" class="loading">
-    <p>Loading your cart items...</p>
+    <p>Loading your cart...</p>
   </div>
-
-  <!-- Error Message if any error occurs while loading -->
+  
+  <!-- Error State -->
   <div *ngIf="errorMessage" class="error">
     <p>{{ errorMessage }}</p>
   </div>
+  
+  <!-- Cart Items -->
+  <div *ngIf="!isLoading && !errorMessage">
+    <div *ngFor="let item of cartItems" class="cart-item">
+      <div class="item-details">
+        <p><strong>Container Number:</strong> {{ item.containerNumber }}</p>
+        <p><strong>Trade Type:</strong> {{ item.tradeType }}</p>
+        <p><strong>Status:</strong> {{ item.status }}</p>
+        <p><strong>Vessel:</strong> {{ item.vesselName }} ({{ item.vesselCode }})</p>
+        <p><strong>Voyage:</strong> {{ item.voyage }}</p>
+        <p><strong>Origin:</strong> {{ item.origin }}</p>
+        <p><strong>Destination:</strong> {{ item.destination }}</p>
+        <p><strong>Size Type:</strong> {{ item.sizeType }}</p>
+        <p><strong>Fees:</strong> ${{ item.fees }}</p>
+      </div>
 
-  <!-- Cart Table -->
-  <table *ngIf="!isLoading && cartItems.length > 0">
-    <thead>
-      <tr>
-        <th>Container Number</th>
-        <th>Trade Type</th>
-        <th>Status</th>
-        <th>Vessel Name</th>
-        <th>Vessel Code</th>
-        <th>Voyage</th>
-        <th>Origin</th>
-        <th>Line</th>
-        <th>Destination</th>
-        <th>Size Type</th>
-        <th>Fees</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of cartItems">
-        <td>{{ item.containerNumber }}</td>
-        <td>{{ item.tradeType }}</td>
-        <td>{{ item.status }}</td>
-        <td>{{ item.vesselName }}</td>
-        <td>{{ item.vesselCode }}</td>
-        <td>{{ item.voyage }}</td>
-        <td>{{ item.origin }}</td>
-        <td>{{ item.line }}</td>
-        <td>{{ item.destination }}</td>
-        <td>{{ item.sizeType }}</td>
-        <td>{{ item.fees | currency }}</td> <!-- Format the fees as currency -->
-        <td>
-          <button (click)="removeFromCart(item)">Remove</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Total Fees Display -->
-  <div *ngIf="!isLoading && cartItems.length > 0">
-    <h3>Total Fees: {{ getTotalFees() | currency }}</h3>
-  </div>
-
-  <!-- Proceed to Checkout Button -->
-  <div *ngIf="!isLoading && cartItems.length > 0">
-    <button (click)="proceedToCheckout()">Proceed to Checkout</button>
-  </div>
-
-  <!-- Empty Cart Message -->
-  <div *ngIf="!isLoading && cartItems.length === 0">
-    <p>Your cart is empty. Please add items to the cart.</p>
+      <!-- Remove Button -->
+      <button (click)="removeFromCart(item)" class="remove-btn">
+        Remove from Cart
+      </button>
+    </div>
+    
+    <!-- Total Fees -->
+    <div class="total-fees">
+      <p><strong>Total Fees:</strong> ${{ getTotalFees() }}</p>
+    </div>
+    
+    <!-- Proceed to Payment -->
+    <div class="payment-btn">
+      <button (click)="proceedToPayment()" [disabled]="cartItems.length === 0">
+        Proceed to Payment
+      </button>
+    </div>
   </div>
 </div>

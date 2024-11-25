@@ -12,5 +12,6 @@ export const routes: Routes = [
     {path:'register',component:RegistrationComponent},
     {path:'containers',component:CosmosContainerComponent},
     {path:'viewcart',component:CartComponent},
-    {path:'payment',component:PaymentSuccessComponent}
+    {path:'payment',component:PaymentSuccessComponent},
+    // { path: 'payment-status', component: PaymentSuccessComponent }
 ];

@@ -1,68 +1,70 @@
 <div class="payment-container">
-    <h2>Payment Form</h2>
-  
-    <form (ngSubmit)="onPaymentSubmit()" #paymentForm="ngForm">
-      <div>
-        <label for="cardNumber">Card Number:</label>
-        <input
-          type="text"
-          id="cardNumber"
-          [(ngModel)]="cardDetails.cardNumber"
-          name="cardNumber"
-          #cardNumber="ngModel"
-          required
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          [ngClass]="{'invalid': cardNumber.invalid && cardNumber.touched}"
-        />
-        <div *ngIf="cardNumber.invalid && cardNumber.touched" class="error-message">
-          <p *ngIf="cardNumber.errors?.['invalidCardNumber']">Card number must be exactly 16 digits long.</p>
-        </div>
+  <h2>Payment Form</h2>
+
+  <form (ngSubmit)="onPaymentSubmit()" #paymentForm="ngForm">
+    <div>
+      <label for="cardNumber">Card Number:</label>
+      <input
+        type="text"
+        id="cardNumber"
+        [(ngModel)]="cardDetails.cardNumber"
+        name="cardNumber"
+        #cardNumber="ngModel"
+        required
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        [ngClass]="{'invalid': cardNumber.invalid && cardNumber.touched}"
+      />
+      <div *ngIf="cardNumber.invalid && cardNumber.touched" class="error-message">
+        <p *ngIf="cardNumber.errors?.['required']">Card number is required.</p>
+        <p *ngIf="cardNumber.errors?.['minlength']">Card number must be exactly 16 digits long.</p>
+        <p *ngIf="cardNumber.errors?.['maxlength']">Card number cannot be more than 16 digits.</p>
       </div>
-  
-      <div>
-        <label for="expiryDate">Expiry Date (MM/YY):</label>
-        <input
-          type="text"
-          id="expiryDate"
-          [(ngModel)]="cardDetails.expiryDate"
-          name="expiryDate"
-          #expiryDate="ngModel"
-          required
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          [ngClass]="{'invalid': expiryDate.invalid && expiryDate.touched}"
-        />
-        <div *ngIf="expiryDate.invalid && expiryDate.touched" class="error-message">
-          <p *ngIf="expiryDate.errors?.['invalidExpiryDate']">Expiry date must be in the future and in the format MM/YY.</p>
-        </div>
-      </div>
-  
-      <div>
-        <label for="cvv">CVV:</label>
-        <input
-          type="text"
-          id="cvv"
-          [(ngModel)]="cardDetails.cvv"
-          name="cvv"
-          #cvv="ngModel"
-          required
-          [ngModelOptions]="{ updateOn: 'blur' }"
-          [ngClass]="{'invalid': cvv.invalid && cvv.touched}"
-        />
-        <div *ngIf="cvv.invalid && cvv.touched" class="error-message">
-          <p *ngIf="cvv.errors?.['invalidCvv']">CVV must be exactly 3 digits long.</p>
-        </div>
-      </div>
-  
-      <button type="submit" [disabled]="paymentForm.invalid || isProcessing">Submit Payment</button>
-    </form>
-  
-    <div *ngIf="isProcessing" class="loading-message">
-      <p>Processing payment...</p>
     </div>
-  
-    <div *ngIf="paymentSuccess" class="success-message">
-      <p>{{ successMessage }}</p>
-      <!-- <a click()="GoToHomepage()">Go To HomePage</a> -->
+
+    <div>
+      <label for="expiryDate">Expiry Date (MM/YY):</label>
+      <input
+        type="text"
+        id="expiryDate"
+        [(ngModel)]="cardDetails.expiryDate"
+        name="expiryDate"
+        #expiryDate="ngModel"
+        required
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        [ngClass]="{'invalid': expiryDate.invalid && expiryDate.touched}"
+      />
+      <div *ngIf="expiryDate.invalid && expiryDate.touched" class="error-message">
+        <p *ngIf="expiryDate.errors?.['required']">Expiry date is required.</p>
+        <p *ngIf="expiryDate.errors?.['pattern']">Expiry date must be in MM/YY format.</p>
+      </div>
     </div>
+
+    <div>
+      <label for="cvv">CVV:</label>
+      <input
+        type="text"
+        id="cvv"
+        [(ngModel)]="cardDetails.cvv"
+        name="cvv"
+        #cvv="ngModel"
+        required
+        [ngModelOptions]="{ updateOn: 'blur' }"
+        [ngClass]="{'invalid': cvv.invalid && cvv.touched}"
+      />
+      <div *ngIf="cvv.invalid && cvv.touched" class="error-message">
+        <p *ngIf="cvv.errors?.['required']">CVV is required.</p>
+        <p *ngIf="cvv.errors?.['minlength']">CVV must be exactly 3 digits long.</p>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="paymentForm.invalid || isProcessing">Submit Payment</button>
+  </form>
+
+  <div *ngIf="isProcessing" class="loading-message">
+    <p>Processing payment...</p>
   </div>
-  
+
+  <div *ngIf="paymentSuccess" class="success-message">
+    <p>{{ successMessage }}</p>
+  </div>
+</div>

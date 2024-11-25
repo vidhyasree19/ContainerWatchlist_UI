@@ -93,4 +93,8 @@ export class ContainerService {
       headers: this.getHeaders()  // Pass the headers with the request
     });
   }
+  updateContainerFees(containerNumber: string, fees: string): Observable<any> {
+    return this.http.put(`/api/containers/${containerNumber}/fees`, { fees, });
+  }
+  
 }

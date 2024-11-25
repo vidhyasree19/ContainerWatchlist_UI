@@ -1,139 +1,154 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ContainerService } from '../../services/container.service'; // Import the container service
+import { PaymentService } from '../../services/paymentservice.service'; // Service for Payment Integration
 import { CommonModule } from '@angular/common';
-import { ContainerService } from '../../services/container.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-payment',
+  selector: 'app-payment-success',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule]
+  imports: [CommonModule, FormsModule]
 })
-export class PaymentSuccessComponent {
+export class PaymentSuccessComponent implements OnInit {
+  paymentSuccess: boolean = false;
+  successMessage: string = "Your payment was successful!";
+  isProcessing: boolean = false;
   cardDetails = {
     cardNumber: '',
     expiryDate: '',
     cvv: ''
   };
+  requestId: string | null = null; // Ensure this is initialized as null
+  containerNumbers: string[] = []; // Array to hold container numbers
 
-  isProcessing: boolean = false;
-  paymentSuccess: boolean = false;
-  successMessage: string = "Your payment was successful!";
+  constructor(
+    private router: Router,
+    private containerService: ContainerService,
+    private paymentService: PaymentService,
+    private route: ActivatedRoute // Inject ActivatedRoute to get query params
+  ) {}
 
-  constructor(private router: Router, private containerService: ContainerService) {}
+  ngOnInit() {
+    // Check if requestId is passed via query parameters
+    this.route.queryParams.subscribe(params => {
+      this.requestId = params['requestId'];
+      console.log('Request ID:', this.requestId); // Debugging: make sure requestId is populated
+    });
 
-  // Custom validator for card number
-  cardNumberValidator(control: any) {
-    const cardNumber = control.value;
-    // Validate card number: must be exactly 16 digits
-    if (!/^\d{16}$/.test(cardNumber)) {
-      return { invalidCardNumber: 'Card number must be exactly 16 digits long.' };
-    }
-    return null;
-  }
-
-  // Custom validator for expiry date
-  expiryDateValidator(control: any) {
-    const expiryDate = control.value;
-    
-    // Check if the expiry date is in the format MM/YY
-    const today = new Date();
-    const [month, year] = expiryDate.split('/').map((part: string) => part.trim());
-  
-    if (!month || !year || month.length !== 2 || year.length !== 2) {
-      return { invalidExpiryDate: 'Expiry date must be in the format MM/YY.' };
-    }
-  
-    const expiryMonth = parseInt(month, 10);  // Ensure month is treated as a number
-    const expiryYear = parseInt(year, 10);    // Ensure year is treated as a number
-  
-    // Validate month (must be between 1 and 12)
-    if (expiryMonth < 1 || expiryMonth > 12) {
-      return { invalidExpiryDate: 'Invalid month in expiry date.' };
-    }
-  
-    // Create a valid expiry date (20YY-MM-01 format, using the first day of the month)
-    const expiryDateObj = new Date(`20${year}-${expiryMonth}-01`);
-  
-    // Ensure the expiry date is in the future
-    if (expiryDateObj <= today) {
-      return { invalidExpiryDate: 'Expiry date must be in the future.' };
-    }
-  
-    return null;
-  }
-  
-  // Custom validator for CVV
-  cvvValidator(control: any) {
-    const cvv = control.value;
-    // CVV must be exactly 3 digits
-    if (!/^\d{3}$/.test(cvv)) {
-      return { invalidCvv: 'CVV must be exactly 3 digits long.' };
-    }
-    return null;
-  }
-
-  // Method to handle payment form submission
-  onPaymentSubmit() {
-    if (!this.cardDetails.cardNumber || !this.cardDetails.expiryDate || !this.cardDetails.cvv) {
-      alert("Please fill in all card details.");
-      return;
-    }
-
-    // Simulate the payment process
-    this.isProcessing = true;
-
-    // Simulating payment success with a delay
-    setTimeout(() => {
-      this.isProcessing = false;
-      this.paymentSuccess = true;
-
-      // Call to remove items from the cart and set fees to zero
-      this.removeItemsFromCart();
-      // this.router.navigate(['/containers']);
-    }, 2000); // Payment success after 2 seconds delay
-  }
-
-  // Method to remove all items from the cart after payment and reset fees to zero
-  removeItemsFromCart() {
+    // Fetch all container numbers associated with the cart or session
     this.containerService.getAllContainersInCart().subscribe(
       (containers) => {
-        containers.forEach((container) => {
-          // Set fees to zero before removing container from cart
-          container.fees = "0";  // Reset fees to zero
-          
-          // Update container with zero fees if necessary
-          this.containerService.getContainerByNumber(container.containerNumber).subscribe(
-            (response) => {
-              console.log(`Fees for container ${container.containerNumber} set to zero.`);
-            },
-            (error) => {
-              console.error(`Error updating fees for container ${container.containerNumber}:`, error);
-            }
-          );
-
-          // Remove the container from the cart
-          this.containerService.removeFromCart(container.containerNumber).subscribe(
-            (response) => {
-              console.log(`Container ${container.containerNumber} removed from cart.`);
-            },
-            (error) => {
-              console.error(`Error removing container ${container.containerNumber}:`, error);
-            }
-          );
-        });
-        // After all containers are removed and fees set to zero, navigate to a success page
-        this.router.navigate(['/payment-success']); // Example: Navigate to a success page
+        this.containerNumbers = containers.map(container => container.containerNumber); // Collect container numbers
+        console.log('Container Numbers:', this.containerNumbers); // Log container numbers
       },
       (error) => {
-        console.error('Error fetching cart items:', error);
+        console.error('Error fetching containers:', error);
       }
     );
   }
 
-  GoToHomepage(){
+  // Custom method to handle payment form submission
+  onPaymentSubmit() {
+    console.log('Form submitted');
+    
+    // Ensure necessary fields are available
+    if (
+      this.containerNumbers.length > 0 &&
+      this.cardDetails.cardNumber &&
+      this.cardDetails.expiryDate &&
+      this.cardDetails.cvv
+    ) {
+      this.isProcessing = true;
+      
+      // Validate the form fields
+      if (!this.isValidCardNumber(this.cardDetails.cardNumber)) {
+        console.log('Invalid card number');
+        this.isProcessing = false;
+        return;
+      }
+      if (!this.isValidExpiryDate(this.cardDetails.expiryDate)) {
+        console.log('Invalid expiry date');
+        this.isProcessing = false;
+        return;
+      }
+      if (!this.isValidCVV(this.cardDetails.cvv)) {
+        console.log('Invalid CVV');
+        this.isProcessing = false;
+        return;
+      }
+    
+      // Proceed with the payment
+      this.paymentService.updatePaymentStatus(this.requestId || '', 'Paid').subscribe(
+        (response) => {
+          console.log('Payment status updated:', response);
+          this.paymentSuccess = true;
+          this.successMessage = 'Your payment was successful!';
+          this.isProcessing = false;
+          
+          // After payment is successful, update the fees in Cosmos DB to 0
+          this.updateFeesAndRemoveContainers();
+        },
+        (error) => {
+          console.error('Error updating payment status', error);
+          this.isProcessing = false;
+          this.successMessage = 'Failed to process payment.';
+        }
+      );
+    } else {
+      console.log('Invalid form data or missing containers');
+    }
+  }
+
+  // Remove items from the cart after payment and reset fees to zero
+  updateFeesAndRemoveContainers() {
+    this.isProcessing = true;
+    this.containerNumbers.forEach((containerNumber) => {
+      // Update the container fees to 0
+      this.paymentService.updateContainerFeesToZero(containerNumber).subscribe(
+        (updateResponse) => {
+          console.log(`Container ${containerNumber} fees updated to 0:`, updateResponse);
+          // Remove the container from the cart
+          this.containerService.removeFromCart(containerNumber).subscribe(
+            (response) => {
+              console.log(`Container ${containerNumber} removed from cart.`);
+            },
+            (error) => {
+              console.error(`Error removing container ${containerNumber}:`, error);
+            }
+          );
+        },
+        (error) => {
+          console.error(`Error updating fees for container ${containerNumber}:`, error);
+        }
+      );
+    });
+
+    // After processing, navigate to the success page
+    this.isProcessing = false;
     this.router.navigate(['/containers']);
+  }
+
+  // Go to the homepage
+  goToHomepage() {
+    this.router.navigate(['/containers']);
+  }
+
+  // Custom validation methods for card details
+  isValidCardNumber(cardNumber: string): boolean {
+    const cardNumberPattern = /^\d{16}$/; // 16 digits card number
+    return cardNumberPattern.test(cardNumber);
+  }
+
+  isValidExpiryDate(expiryDate: string): boolean {
+    const expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/; // MM/YY format
+    return expiryDatePattern.test(expiryDate);
+  }
+
+  isValidCVV(cvv: string): boolean {
+    const cvvPattern = /^\d{3}$/; // 3 digits CVV
+    return cvvPattern.test(cvv);
   }
 }
